@@ -38,3 +38,4 @@ libusbmuxd*.pc
 tools/.libs/*
 tools/iproxy
 tools/inetcat
+build-release/
