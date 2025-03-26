@@ -1,8 +1,9 @@
 from conan import ConanFile
-from conan.tools.layout import basic_layout
+from conan.tools.cmake import cmake_layout
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 from conan.tools.files import copy
 from os.path import join
+from conan.tools.apple import fix_apple_shared_install_name
 
 class libplistConan(ConanFile):
     name = "libusbmuxd"
@@ -37,7 +38,7 @@ class libplistConan(ConanFile):
         self.requires("libimobiledevice-glue/1.3.1")
 
     def layout(self):
-        basic_layout(self)
+        cmake_layout(self)
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -68,8 +69,8 @@ class libplistConan(ConanFile):
         
         custom_relative_path = join("x64", platform_path, configuration_path)
 
-        lib_path = join("lib", custom_relative_path)
-        bin_path = join("bin", custom_relative_path)        
+        lib_path = "lib"
+        bin_path = "bin"      
         
         
         self.cpp_info.set_property("cmake_file_name", "libusbmuxd")
@@ -77,7 +78,9 @@ class libplistConan(ConanFile):
         self.cpp_info.set_property("cmake_find_mode", "both")
         self.cpp_info.set_property("pkg_config_name", "libusbmuxd")        
         
-        self.cpp_info.libdirs = [lib_path]
-        self.cpp_info.libs = ["usbmuxd"]
-        self.cpp_info.bindirs = [bin_path]        
+        self.cpp_info.libdirs = [lib_path]   
+        self.cpp_info.libs = ["libusbmuxd"]
+        self.cpp_info.bindirs = [bin_path]
+        self.cpp_info.components["libusbmuxd"].libs = ["libusbmuxd.a"]
+        fix_apple_shared_install_name(self)      
         

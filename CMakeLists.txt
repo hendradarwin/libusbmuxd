@@ -18,7 +18,7 @@ list(APPEND libimobiledevice_source_files
     
 )
 
-add_library(usbmuxd SHARED ${libimobiledevice_source_files})
+add_library(usbmuxd STATIC ${libimobiledevice_source_files})
 
 target_include_directories(usbmuxd
     PUBLIC         
@@ -29,26 +29,39 @@ target_include_directories(usbmuxd
 
 target_compile_definitions(usbmuxd PUBLIC 
     PACKAGE_VERSION="2.6.0"
+    HAVE_STPNCPY
 )
 
 target_link_libraries(usbmuxd PUBLIC 
     libplist::libplist
     libimobiledevice-glue::libimobiledevice-glue
-    ole32 
-    ws2_32 
-    gdi32 
-    Iphlpapi)
+)
+
+# ole32 
+# ws2_32 
+# gdi32 
+# Iphlpapi
+
 
 set_target_properties(usbmuxd PROPERTIES 
     PUBLIC_HEADER "${header_file_list}"
 )
 
+# install(
+#     TARGETS usbmuxd
+#     EXPORT plist_targets
+#     PUBLIC_HEADER DESTINATION "include/libusbmuxd"
+#     RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+#     LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+# )
+
+
 install(
     TARGETS usbmuxd
-    EXPORT plist_targets
-    PUBLIC_HEADER DESTINATION "include/libusbmuxd"
-    RUNTIME DESTINATION "bin/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    ARCHIVE DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
-    LIBRARY DESTINATION "lib/x64/$<$<PLATFORM_ID:Windows>:windows>$<$<PLATFORM_ID:Linux>:linux>$<$<CONFIG:Debug,DebugASan,DebugTSan>:/debug>"
+    EXPORT usbmuxd_targets
+    PUBLIC_HEADER DESTINATION "include"
+    RUNTIME DESTINATION "bin"
+    ARCHIVE DESTINATION "lib"
+    LIBRARY DESTINATION "lib"
 )
-
