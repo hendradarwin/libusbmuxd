@@ -1,0 +1,8 @@
+include(common)
+
+[settings]
+os=Windows
+compiler=msvc
+compiler.runtime=dynamic
+compiler.version=193
+compiler.cppstd=17

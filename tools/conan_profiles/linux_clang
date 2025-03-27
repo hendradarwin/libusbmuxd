@@ -1,0 +1,13 @@
+include(common)
+
+[settings]
+os=Linux
+compiler=clang
+compiler.cppstd=17
+compiler.version=10
+compiler.libcxx=libstdc++11
+gtest:compiler=clang
+gtest:compiler.version=10
+
+[conf]
+tools.build:compiler_executables={"c": "clang", "cpp": "clang++"}
