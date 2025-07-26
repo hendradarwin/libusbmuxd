@@ -34,7 +34,7 @@ class libplistConan(ConanFile):
             self.options.rm_safe("fPIC")
             
     def requirements(self):
-        self.requires("libplist/2.6.0")
+        self.requires("libplist/2.6.1")
         self.requires("libimobiledevice-glue/1.3.1")
 
     def layout(self):
@@ -79,8 +79,16 @@ class libplistConan(ConanFile):
         self.cpp_info.set_property("pkg_config_name", "libusbmuxd")        
         
         self.cpp_info.libdirs = [lib_path]   
-        self.cpp_info.libs = ["libusbmuxd"]
         self.cpp_info.bindirs = [bin_path]
-        self.cpp_info.components["libusbmuxd"].libs = ["libusbmuxd.a"]
+
+        if self.settings.os=="Windows":
+            self.cpp_info.libs = ["usbmuxd"]
+            self.cpp_info.components["usbmuxd"].libs = ["usbmuxd.lib"]
+        elif self.settings.os=="Macos":    
+            self.cpp_info.libs = ["libusbmuxd"]
+            self.cpp_info.components["libusbmuxd"].libs = ["libusbmuxd.a"]
+
+
+
         fix_apple_shared_install_name(self)      
         

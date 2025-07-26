@@ -29,7 +29,10 @@ target_include_directories(usbmuxd
 
 target_compile_definitions(usbmuxd PUBLIC 
     PACKAGE_VERSION="2.6.0"
-    HAVE_STPNCPY
+    # HAVE_STPNCPY
+    LIBUSBMUXD_STATIC
+    LIBPLIST_STATIC
+    LIMD_GLUE_STATIC       
 )
 
 target_link_libraries(usbmuxd PUBLIC 
