@@ -32,7 +32,13 @@
 #ifdef LIBUSBMUXD_STATIC
   #define USBMUXD_API
 #elif defined(_WIN32)
-  #define USBMUXD_API __declspec( dllexport )
+//   #define USBMUXD_API __declspec( dllexport )
+  #if defined LIBUSBMUXD_BUILD_SHARED_LIBRARY
+    #define USBMUXD_API __declspec(dllexport) 
+  #else 
+    #define USBMUXD_API __declspec(dllimport) 
+  #endif  
+
 #else
   #if __GNUC__ >= 4
     #define USBMUXD_API __attribute__((visibility("default")))

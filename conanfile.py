@@ -21,10 +21,8 @@ class libplistConan(ConanFile):
     # Binary configuration
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "fPIC": [True, False]}
-    default_options = {"shared": False, "fPIC": True}
+    default_options = {"shared": True, "fPIC": True}
 
-
-    
     def config_options(self):
         if self.settings.os == "Windows":
             self.options.rm_safe("fPIC")
@@ -34,7 +32,7 @@ class libplistConan(ConanFile):
             self.options.rm_safe("fPIC")
             
     def requirements(self):
-        self.requires("libplist/2.6.1")
+        self.requires("libplist/2.6.0")
         self.requires("libimobiledevice-glue/1.3.1")
 
     def layout(self):
@@ -58,26 +56,9 @@ class libplistConan(ConanFile):
         cmake.install()
 
     def package_info(self):
-        # self.cpp_info.libs = ["libusbmuxd"]
-        platform_path = "windows"
-        if self.settings.os=="Linux":
-            platform_path = "linux"
-        
-        configuration_path = ""
-        if self.settings.build_type == "Debug":
-            configuration_path = "debug"
-        
-        custom_relative_path = join("x64", platform_path, configuration_path)
-
         lib_path = "lib"
         bin_path = "bin"      
-        
-        
-        self.cpp_info.set_property("cmake_file_name", "libusbmuxd")
-        self.cpp_info.set_property("cmake_target_name", "libusbmuxd::libusbmuxd")
-        self.cpp_info.set_property("cmake_find_mode", "both")
-        self.cpp_info.set_property("pkg_config_name", "libusbmuxd")        
-        
+                        
         self.cpp_info.libdirs = [lib_path]   
         self.cpp_info.bindirs = [bin_path]
 
@@ -87,8 +68,6 @@ class libplistConan(ConanFile):
         elif self.settings.os=="Macos":    
             self.cpp_info.libs = ["libusbmuxd"]
             self.cpp_info.components["libusbmuxd"].libs = ["libusbmuxd.a"]
-
-
 
         fix_apple_shared_install_name(self)      
         
